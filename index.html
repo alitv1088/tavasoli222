@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>یه سوال کوچولو 💌</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --y-1: #fff6d9;
+        --y-2: #ffe89a;
+        --y-hot: #ffc93c;
+        --y-deep: #e0a423;
+        --peach-1: #fff3e0;
+        --peach-2: #ffe4b3;
+        --cream: #fffdf5;
+        --brown: #5b4a2f;
+        --brown-soft: #8a7a5f;
+        --gold: #ffd580;
+        --shadow: 0 20px 45px -18px rgba(224, 164, 35, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Vazirmatn", sans-serif;
+        background:
+          radial-gradient(circle at 20% 20%, var(--peach-1), transparent 55%),
+          radial-gradient(circle at 85% 15%, var(--y-1), transparent 50%),
+          linear-gradient(
+            160deg,
+            var(--cream) 0%,
+            #fffaf0 45%,
+            var(--peach-1) 100%
+          );
+        color: var(--brown);
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* floating ambient bits */
+      .bg-float {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .float-item {
+        position: absolute;
+        opacity: 0.55;
+        filter: drop-shadow(0 4px 6px rgba(224, 164, 35, 0.15));
+        animation: floatUp linear infinite;
+        user-select: none;
+      }
+      @keyframes floatUp {
+        0% {
+          transform: translateY(110vh) rotate(0deg) scale(1);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.6;
+        }
+        90% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translateY(-15vh) rotate(360deg) scale(1.1);
+          opacity: 0;
+        }
+      }
+
+      .stage {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .card {
+        position: relative;
+        width: 100%;
+        max-width: 430px;
+        background: linear-gradient(180deg, #ffffff 0%, #fffdf5 100%);
+        border-radius: 32px;
+        padding: 38px 30px 32px;
+        box-shadow:
+          var(--shadow),
+          0 1px 0 rgba(255, 255, 255, 0.8) inset;
+        border: 1px solid rgba(255, 222, 140, 0.7);
+        text-align: center;
+        animation: cardIn 0.7s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+      }
+
+      @keyframes cardIn {
+        0% {
+          opacity: 0;
+          transform: translateY(30px) scale(0.94);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* progress dots */
+      .progress {
+        display: flex;
+        justify-content: center;
+        gap: 9px;
+        margin-bottom: 22px;
+      }
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--y-2);
+        transition: all 0.4s ease;
+      }
+      .dot.active {
+        background: var(--y-hot);
+        width: 26px;
+        border-radius: 6px;
+      }
+      .dot.done {
+        background: var(--y-deep);
+      }
+
+      .step {
+        display: none;
+      }
+      .step.visible {
+        display: block;
+        animation: stepIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      @keyframes stepIn {
+        0% {
+          opacity: 0;
+          transform: translateX(14px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .step.leaving {
+        animation: stepOut 0.35s ease both;
+      }
+      @keyframes stepOut {
+        0% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(-14px);
+        }
+      }
+
+      .emoji-top {
+        font-size: 44px;
+        display: block;
+        margin-bottom: 6px;
+        animation: wiggle 2.4s ease-in-out infinite;
+      }
+      @keyframes wiggle {
+        0%,
+        100% {
+          transform: rotate(-4deg);
+        }
+        50% {
+          transform: rotate(4deg);
+        }
+      }
+
+      h1 {
+        font-size: 23px;
+        font-weight: 800;
+        margin: 6px 0 6px;
+        color: var(--brown);
+        line-height: 1.5;
+      }
+      p.sub {
+        font-size: 14.5px;
+        color: var(--brown-soft);
+        margin: 0 0 26px;
+        line-height: 1.8;
+      }
+
+      /* step 1: yes/no buttons */
+      .yn-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        min-height: 120px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        font-family: "Vazirmatn", sans-serif;
+        border-radius: 999px;
+        transition:
+          transform 0.35s cubic-bezier(0.22, 1.4, 0.36, 1),
+          font-size 0.35s cubic-bezier(0.22, 1.4, 0.36, 1),
+          padding 0.35s ease,
+          box-shadow 0.3s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .btn:active {
+        transform: scale(0.94);
+      }
+
+      .btn-yes {
+        background: linear-gradient(135deg, var(--y-hot), var(--y-deep));
+        color: #573f0a;
+        font-weight: 800;
+        padding: 16px 30px;
+        font-size: 17px;
+        box-shadow: 0 12px 24px -8px rgba(224, 164, 35, 0.55);
+      }
+      .btn-yes:hover {
+        transform: translateY(-2px) scale(1.03);
+      }
+
+      .btn-no {
+        background: #fff8e6;
+        color: var(--brown-soft);
+        font-weight: 600;
+        padding: 14px 22px;
+        font-size: 15px;
+        border: 1.5px solid #ffe4a3;
+      }
+      .btn-no:hover {
+        background: #ffefc4;
+      }
+
+      .no-caption {
+        font-size: 12px;
+        color: var(--y-deep);
+        margin-top: 14px;
+        min-height: 16px;
+        font-weight: 600;
+        opacity: 0.85;
+      }
+
+      /* step 2: datetime */
+      .field-group {
+        text-align: right;
+        margin-bottom: 18px;
+      }
+      label.field-label {
+        display: block;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--brown);
+        margin-bottom: 8px;
+      }
+      input[type="date"],
+      input[type="time"] {
+        width: 100%;
+        font-family: "Vazirmatn", sans-serif;
+        padding: 13px 16px;
+        border-radius: 16px;
+        border: 1.5px solid #ffe4a3;
+        background: #fffcf0;
+        font-size: 15px;
+        color: var(--brown);
+        outline: none;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      input[type="date"]:focus,
+      input[type="time"]:focus {
+        border-color: var(--y-hot);
+        box-shadow: 0 0 0 4px rgba(255, 201, 60, 0.2);
+      }
+
+      /* step 3: food options */
+      .food-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 8px;
+      }
+      .food-card {
+        position: relative;
+        cursor: pointer;
+        border-radius: 20px;
+        border: 1.5px solid #ffedc2;
+        background: #fffcf0;
+        padding: 18px 10px 14px;
+        transition:
+          transform 0.25s cubic-bezier(0.22, 1.4, 0.36, 1),
+          border-color 0.25s ease,
+          box-shadow 0.25s ease,
+          background 0.25s ease;
+      }
+      .food-card:hover {
+        transform: translateY(-3px);
+      }
+      .food-card .fe {
+        font-size: 34px;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .food-card .fn {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--brown);
+      }
+      .food-card.selected {
+        border-color: var(--y-hot);
+        background: linear-gradient(135deg, #fff9e3, #ffedb8);
+        box-shadow: 0 10px 22px -10px rgba(224, 164, 35, 0.45);
+        transform: translateY(-3px) scale(1.02);
+      }
+      .food-card.selected::after {
+        content: "✓";
+        position: absolute;
+        top: 8px;
+        left: 10px;
+        width: 20px;
+        height: 20px;
+        background: var(--y-hot);
+        color: #573f0a;
+        border-radius: 50%;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+
+      /* nav buttons */
+      .next-btn {
+        margin-top: 22px;
+        width: 100%;
+        background: linear-gradient(135deg, var(--y-hot), var(--y-deep));
+        color: #573f0a;
+        font-weight: 800;
+        font-size: 16px;
+        padding: 15px;
+        border-radius: 18px;
+        box-shadow: 0 12px 24px -10px rgba(224, 164, 35, 0.5);
+        opacity: 0.4;
+        pointer-events: none;
+        transition:
+          opacity 0.3s ease,
+          transform 0.2s ease;
+      }
+      .next-btn.enabled {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .next-btn.enabled:hover {
+        transform: translateY(-2px);
+      }
+      .next-btn:active {
+        transform: scale(0.97);
+      }
+
+      /* final step */
+      .final-emoji {
+        font-size: 56px;
+        display: block;
+        margin-bottom: 10px;
+        animation: pop 0.6s cubic-bezier(0.22, 1.6, 0.36, 1) both;
+      }
+      @keyframes pop {
+        0% {
+          transform: scale(0);
+          opacity: 0;
+        }
+        70% {
+          transform: scale(1.15);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .final-msg {
+        font-size: 19px;
+        font-weight: 800;
+        color: var(--brown);
+        line-height: 2;
+        margin-bottom: 6px;
+      }
+      .final-detail {
+        font-size: 15px;
+        color: var(--y-deep);
+        font-weight: 700;
+        margin-bottom: 18px;
+      }
+      .footnote {
+        font-size: 11px;
+        color: var(--brown-soft);
+        opacity: 0.75;
+        line-height: 1.8;
+        border-top: 1px dashed #ffe4a3;
+        padding-top: 14px;
+        margin-top: 6px;
+      }
+
+      /* whatsapp send button */
+      .wa-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        margin: 18px 0 6px;
+        background: linear-gradient(135deg, #25d366, #1ebe5b);
+        color: #fff;
+        font-family: "Vazirmatn", sans-serif;
+        font-weight: 800;
+        font-size: 15.5px;
+        padding: 14px;
+        border: none;
+        border-radius: 16px;
+        text-decoration: none;
+        box-shadow: 0 12px 24px -10px rgba(37, 211, 102, 0.55);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .wa-btn:hover {
+        transform: translateY(-2px);
+      }
+      .wa-btn:active {
+        transform: scale(0.97);
+      }
+      .wa-btn svg {
+        width: 19px;
+        height: 19px;
+        flex-shrink: 0;
+      }
+      .wa-sent-note {
+        font-size: 11.5px;
+        color: var(--brown-soft);
+        opacity: 0.85;
+        margin-top: 4px;
+        min-height: 14px;
+      }
+
+      /* confetti burst */
+      .burst {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .burst-piece {
+        position: absolute;
+        font-size: 20px;
+        animation: burstFly 1.1s ease-out forwards;
+      }
+      @keyframes burstFly {
+        0% {
+          transform: translate(0, 0) scale(0.6) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--rot));
+          opacity: 0;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .card {
+          padding: 30px 20px 26px;
+        }
+        h1 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-float" id="bgFloat"></div>
+
+    <div class="stage">
+      <div class="card">
+        <div class="progress" id="progress"></div>
+
+        <!-- Step 1 -->
+        <div class="step visible" data-step="1">
+          <span class="emoji-top">🥺</span>
+          <h1>محدثه خانوم افتخار میدی با علیرضا توسلی بیای سر قرار؟</h1>
+          <p class="sub">فقط یه سوال ساده‌ست... جواب درست هم فقط یکیشه 😏</p>
+          <div class="yn-wrap">
+            <button class="btn btn-yes" id="yesBtn" onclick="goStep(2)">
+              آره؟؟ 💛
+            </button>
+            <button class="btn btn-no" id="noBtn" onclick="handleNo()">
+              نه؟؟
+            </button>
+          </div>
+          <div class="no-caption" id="noCaption"></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step" data-step="2">
+          <span class="emoji-top">📅</span>
+          <h1>کی وقت داری؟</h1>
+          <p class="sub">یه تاریخ و ساعت خوب برام انتخاب کن</p>
+
+          <div class="field-group">
+            <label class="field-label">تاریخ</label>
+            <input type="date" id="dateInput" onchange="checkStep2()" />
+          </div>
+          <div class="field-group">
+            <label class="field-label">ساعت</label>
+            <input type="time" id="timeInput" onchange="checkStep2()" />
+          </div>
+
+          <button class="next-btn" id="next2" onclick="goStep(3)">
+            بعدی ✨
+          </button>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step" data-step="3">
+          <span class="emoji-top">🍽️</span>
+          <h1>چی سفارش میدی؟</h1>
+          <p class="sub">یه چیز خوشمزه انتخاب کن که مهمونت باشی</p>
+
+          <div class="food-grid" id="foodGrid">
+            <div class="food-card" data-food="قهوه" onclick="selectFood(this)">
+              <span class="fe">☕</span>
+              <span class="fn">قهوه</span>
+            </div>
+            <div class="food-card" data-food="بستنی" onclick="selectFood(this)">
+              <span class="fe">🍨</span>
+              <span class="fn">بستنی</span>
+            </div>
+            <div class="food-card" data-food="آبجو" onclick="selectFood(this)">
+              <span class="fe">🍻</span>
+              <span class="fn">آبجو</span>
+            </div>
+            <div
+              class="food-card"
+              data-food="سوخاری"
+              onclick="selectFood(this)"
+            >
+              <span class="fe">🍢</span>
+              <span class="fn">سوخاری</span>
+            </div>
+            <div class="food-card" data-food="قلیان" onclick="selectFood(this)">
+              <span class="fe">🚬</span>
+              <span class="fn">قلیان</span>
+            </div>
+          </div>
+
+          <button class="next-btn" id="next3" onclick="goFinal()">
+            بریم که بریم 💌
+          </button>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step" data-step="4">
+          <span class="final-emoji">🎉</span>
+          <div class="final-msg">خوشحالم نگفتی نه!</div>
+          <div class="final-detail" id="finalDetail"></div>
+          <p class="sub" style="margin-bottom: 0">
+            پس آماده باش عشق قشنگم، خودم میام دنبالت 🚗💨
+          </p>
+
+          <a
+            class="wa-btn"
+            id="waBtn"
+            href="#"
+            target="_blank"
+            rel="noopener"
+            onclick="markSent()"
+          >
+            <svg viewBox="0 0 32 32" fill="currentColor">
+              <path
+                d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.66 4.6 1.81 6.49L4 29l7.72-1.77A11.93 11.93 0 0 0 16.001 27C22.63 27 28 21.627 28 15S22.63 3 16.001 3zm0 21.8a9.76 9.76 0 0 1-4.98-1.36l-.357-.213-4.583 1.05 1.08-4.47-.233-.366A9.77 9.77 0 0 1 6.2 15c0-5.404 4.396-9.8 9.801-9.8 5.404 0 9.799 4.396 9.799 9.8 0 5.404-4.395 9.8-9.799 9.8zm5.36-7.34c-.294-.147-1.74-.858-2.01-.956-.27-.098-.467-.147-.664.147-.196.294-.76.956-.932 1.152-.171.196-.343.22-.637.073-.294-.147-1.24-.457-2.363-1.458-.874-.78-1.464-1.744-1.636-2.038-.171-.294-.018-.453.129-.6.132-.132.294-.343.441-.514.147-.171.196-.294.294-.49.098-.196.049-.367-.024-.514-.073-.147-.664-1.6-.91-2.19-.24-.575-.483-.497-.664-.506l-.565-.01c-.196 0-.514.073-.784.367-.27.294-1.03 1.006-1.03 2.454s1.054 2.846 1.201 3.043c.147.196 2.075 3.168 5.028 4.442.703.303 1.25.484 1.677.62.705.224 1.346.192 1.853.117.565-.085 1.74-.712 1.985-1.4.245-.687.245-1.276.171-1.4-.073-.122-.27-.196-.564-.343z"
+              />
+            </svg>
+            <span>ارسال مشخصات قرار به واتساپ</span>
+          </a>
+          <div class="wa-sent-note" id="waSentNote"></div>
+
+          <div class="footnote">
+            برای اینکه ازت درخواست کنم یه وبسایت طراحی کردم، چیز مهمی نبود 🙈
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ---------- background floating bits ----------
+      const floatEmojis = ["⭐", "✨", "🌟", "💛", "🌻"];
+      const bgFloat = document.getElementById("bgFloat");
+      for (let i = 0; i < 16; i++) {
+        const el = document.createElement("div");
+        el.className = "float-item";
+        el.textContent =
+          floatEmojis[Math.floor(Math.random() * floatEmojis.length)];
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.fontSize = 14 + Math.random() * 20 + "px";
+        el.style.animationDuration = 10 + Math.random() * 10 + "s";
+        el.style.animationDelay = Math.random() * 10 + "s";
+        bgFloat.appendChild(el);
+      }
+
+      // ---------- progress dots ----------
+      const totalSteps = 4;
+      const progressEl = document.getElementById("progress");
+      for (let i = 1; i <= totalSteps; i++) {
+        const d = document.createElement("div");
+        d.className = "dot" + (i === 1 ? " active" : "");
+        d.id = "dot" + i;
+        progressEl.appendChild(d);
+      }
+
+      let currentStep = 1;
+      let noClicks = 0;
+
+      const noCaptions = [
+        "مطمئنی؟ 🥹",
+        "فکراتو بکن... 👉👈",
+        "دکمه آره داره صدات میزنه 💛",
+        "خب دیگه بسه، فقط آره رو بزن 😅",
+        "آره همینجاست، منتظرته 💛",
+      ];
+
+      function handleNo() {
+        noClicks++;
+        const yesBtn = document.getElementById("yesBtn");
+        const noBtn = document.getElementById("noBtn");
+        const cap = document.getElementById("noCaption");
+
+        // grow yes, shrink no
+        const yesScale = Math.min(1 + noClicks * 0.28, 3.2);
+        const noScale = Math.max(1 - noClicks * 0.16, 0.35);
+
+        yesBtn.style.fontSize = 17 * yesScale + "px";
+        yesBtn.style.padding =
+          16 * Math.min(yesScale, 1.8) +
+          "px " +
+          30 * Math.min(yesScale, 2) +
+          "px";
+
+        noBtn.style.fontSize = 15 * noScale + "px";
+        noBtn.style.padding = 14 * noScale + "px " + 22 * noScale + "px";
+        noBtn.style.opacity = Math.max(1 - noClicks * 0.15, 0.25);
+
+        cap.textContent =
+          noCaptions[Math.min(noClicks - 1, noCaptions.length - 1)];
+
+        // little shake
+        noBtn.style.transform =
+          "scale(0.94) rotate(" + (Math.random() > 0.5 ? 3 : -3) + "deg)";
+        setTimeout(() => {
+          noBtn.style.transform = "";
+        }, 200);
+
+        if (noClicks >= 6) {
+          noBtn.style.display = "none";
+        }
+      }
+
+      function goStep(step) {
+        const current = document.querySelector(
+          '.step[data-step="' + currentStep + '"]',
+        );
+        const next = document.querySelector('.step[data-step="' + step + '"]');
+
+        current.classList.add("leaving");
+        setTimeout(() => {
+          current.classList.remove("visible", "leaving");
+          next.classList.add("visible");
+        }, 320);
+
+        // update dots
+        document.getElementById("dot" + currentStep).classList.remove("active");
+        document.getElementById("dot" + currentStep).classList.add("done");
+        document.getElementById("dot" + step).classList.add("active");
+
+        currentStep = step;
+        spawnBurst(10);
+      }
+
+      function checkStep2() {
+        const d = document.getElementById("dateInput").value;
+        const t = document.getElementById("timeInput").value;
+        const btn = document.getElementById("next2");
+        if (d && t) {
+          btn.classList.add("enabled");
+        } else {
+          btn.classList.remove("enabled");
+        }
+      }
+
+      let selectedFood = null;
+      function selectFood(el) {
+        document
+          .querySelectorAll(".food-card")
+          .forEach((c) => c.classList.remove("selected"));
+        el.classList.add("selected");
+        selectedFood = el.dataset.food;
+        document.getElementById("next3").classList.add("enabled");
+      }
+
+      // ---------- Gregorian to Jalali (Persian) date conversion ----------
+      function div(a, b) {
+        return Math.floor(a / b);
+      }
+
+      function gregorianToJalali(gy, gm, gd) {
+        const g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+        const gy2 = gm > 2 ? gy + 1 : gy;
+        let days =
+          355666 +
+          365 * gy +
+          div(gy2 + 3, 4) -
+          div(gy2 + 99, 100) +
+          div(gy2 + 399, 400) +
+          gd +
+          g_d_m[gm - 1];
+        let jy = -1595 + 33 * div(days, 12053);
+        days %= 12053;
+        jy += 4 * div(days, 1461);
+        days %= 1461;
+        if (days > 365) {
+          jy += div(days - 1, 365);
+          days = (days - 1) % 365;
+        }
+        let jm, jd;
+        if (days < 186) {
+          jm = 1 + div(days, 31);
+          jd = 1 + (days % 31);
+        } else {
+          jm = 7 + div(days - 186, 30);
+          jd = 1 + ((days - 186) % 30);
+        }
+        return [jy, jm, jd];
+      }
+
+      const jalaliMonths = [
+        "فروردین",
+        "اردیبهشت",
+        "خرداد",
+        "تیر",
+        "مرداد",
+        "شهریور",
+        "مهر",
+        "آبان",
+        "آذر",
+        "دی",
+        "بهمن",
+        "اسفند",
+      ];
+      const weekDays = [
+        "یکشنبه",
+        "دوشنبه",
+        "سه‌شنبه",
+        "چهارشنبه",
+        "پنجشنبه",
+        "جمعه",
+        "شنبه",
+      ];
+
+      function formatTime(t) {
+        if (!t) return "";
+        const [hh, mm] = t.split(":");
+        const h = parseInt(hh, 10);
+        if (mm === "00") return String(h);
+        return h + ":" + mm;
+      }
+
+      function goFinal() {
+        const d = document.getElementById("dateInput").value;
+        const t = document.getElementById("timeInput").value;
+
+        let dateStr = "";
+        if (d) {
+          const [gy, gm, gd] = d.split("-").map((n) => parseInt(n, 10));
+          const gDateObj = new Date(gy, gm - 1, gd);
+          const weekDayName = weekDays[gDateObj.getDay()];
+          const [, jm, jd] = gregorianToJalali(gy, gm, gd);
+          dateStr = weekDayName + " " + jd + " " + jalaliMonths[jm - 1];
+        }
+
+        const timeStr = t ? "ساعت " + formatTime(t) : "";
+
+        document.getElementById("finalDetail").textContent =
+          "پس " +
+          dateStr +
+          (timeStr ? " " + timeStr : "") +
+          " میام دنبالت، برای " +
+          (selectedFood || "یه چیز خوشمزه") +
+          " 🥂";
+
+        // build whatsapp message with the date details
+        const waPhone = "989365552430";
+        const waMessage =
+          "سلام 💛 جواب سوالت رو دادم:\n" +
+          "آره! میام سر قرار 🎉\n" +
+          "تاریخ: " +
+          (dateStr || "-") +
+          "\n" +
+          "ساعت: " +
+          (t ? formatTime(t) : "-") +
+          "\n" +
+          "غذا: " +
+          (selectedFood || "-");
+        const waLink =
+          "https://wa.me/" + waPhone + "?text=" + encodeURIComponent(waMessage);
+        document.getElementById("waBtn").href = waLink;
+
+        goStep(4);
+        setTimeout(() => spawnBurst(28), 350);
+      }
+
+      function markSent() {
+        document.getElementById("waSentNote").textContent =
+          "واتساپ باز شد، فقط دکمه ارسال رو بزن تا برام بره 💌";
+      }
+
+      // ---------- burst animation ----------
+      function spawnBurst(count) {
+        const burst = document.createElement("div");
+        burst.className = "burst";
+        document.body.appendChild(burst);
+        const emojis = ["⭐", "✨", "🌟", "💛", "🌻"];
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("div");
+          p.className = "burst-piece";
+          p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+          const startX = window.innerWidth / 2 + (Math.random() - 0.5) * 120;
+          const startY = window.innerHeight / 2 + (Math.random() - 0.5) * 80;
+          p.style.left = startX + "px";
+          p.style.top = startY + "px";
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 80 + Math.random() * 160;
+          p.style.setProperty("--tx", Math.cos(angle) * dist + "px");
+          p.style.setProperty("--ty", Math.sin(angle) * dist - 60 + "px");
+          p.style.setProperty("--rot", Math.random() * 360 - 180 + "deg");
+          p.style.animationDelay = Math.random() * 0.15 + "s";
+          burst.appendChild(p);
+        }
+        setTimeout(() => burst.remove(), 1400);
+      }
+    </script>
+  </body>
+</html>
